@@ -54,9 +54,9 @@ def download_images(images):
 
             # Save the resized image
             try:
-              resized_image.save("C:\\Users\\tranb\\Pictures\\pics\\"+str(random.randint(10**12,10**18)+1)+".png")
+              resized_image.save("C:\\Users\\tranb\\Pictures\\pics\\"+str(random.randint(10**11,10**12))+".png")
             except:
-              resized_image.convert('RGB').save("C:\\Users\\tranb\\Pictures\\pics\\"+str(random.randint(10**12,10**18)+1)+".png")
+              resized_image.convert('RGB').save("C:\\Users\\tranb\\Pictures\\pics\\"+str(random.randint(10**11,10**12))+".png")
 
 
 
@@ -94,7 +94,7 @@ for domain in domains:
             resized_image = imageFile.resize(new_size)
 
             # Save the resized image
-            resized_image.save('C:\\Users\\tranb\\Pictures\\pics\\'+str(random.randint(10**12,10**18)+1)+".png")
+            resized_image.save('C:\\Users\\tranb\\Pictures\\pics\\'+str(random.randint(10**11,10**12))+".png")
         except:
             try:
                 r = requests.get('https://files.catbox.moe/' + restOfStr + '.jpg').content
@@ -103,7 +103,7 @@ for domain in domains:
                 imageStream = io.BytesIO(r)
                 imageFile = Image.open(imageStream)
                 resized_image = imageFile.resize(new_size)
-                resized_image.save('C:\\Users\\tranb\\Pictures\\pics\\'+str(random.randint(10**12,10**18)+1)+".jpg")
+                resized_image.save('C:\\Users\\tranb\\Pictures\\pics\\'+str(random.randint(10**11,10**12))+".jpg")
             except: 
                 try:
                     r = requests.get('https://files.catbox.moe/' + restOfStr + '.png').content
@@ -112,7 +112,7 @@ for domain in domains:
                     imageStream = io.BytesIO(r)
                     imageFile = Image.open(imageStream)
                     resized_image = imageFile.resize(new_size)
-                    resized_image.save('C:\\Users\\tranb\\Pictures\\pics\\'+str(random.randint(10**12,10**18)+1)+".png")
+                    resized_image.save('C:\\Users\\tranb\\Pictures\\pics\\'+str(random.randint(10**11,10**12))+".png")
                 except:
                     try:
                         r = requests.get('https://litter.catbox.moe/' + restOfStr + '.jpg').content
@@ -121,7 +121,7 @@ for domain in domains:
                         imageStream = io.BytesIO(r)
                         imageFile = Image.open(imageStream)
                         resized_image = imageFile.resize(new_size)
-                        resized_image.save('C:\\Users\\tranb\\Pictures\\pics\\'+str(random.randint(10**12,10**18)+1)+".jpg")
+                        resized_image.save('C:\\Users\\tranb\\Pictures\\pics\\'+str(random.randint(10**11,10**12))+".jpg")
                     except:
                         try:
                             r = requests.get('https://files.catbox.moe/' + restOfStr + '.jpeg').content
@@ -130,7 +130,7 @@ for domain in domains:
                             imageStream = io.BytesIO(r)
                             imageFile = Image.open(imageStream)
                             resized_image = imageFile.resize(new_size)
-                            resized_image.save('C:\\Users\\tranb\\Pictures\\pics\\'+str(random.randint(10**12,10**18)+1)+".png")
+                            resized_image.save('C:\\Users\\tranb\\Pictures\\pics\\'+str(random.randint(10**11,10**12))+".png")
                         except:
                             try:
                                 r = requests.get('https://litter.catbox.moe/' + restOfStr + '.jpeg').content
@@ -139,7 +139,7 @@ for domain in domains:
                                 imageStream = io.BytesIO(r)
                                 imageFile = Image.open(imageStream)
                                 resized_image = imageFile.resize(new_size)
-                                resized_image.save('C:\\Users\\tranb\\Pictures\\pics\\'+str(random.randint(10**12,10**18)+1)+".jpg")
+                                resized_image.save('C:\\Users\\tranb\\Pictures\\pics\\'+str(random.randint(10**11,10**12))+".jpg")
                        
                             except:
                                 print('https://' + domain + restOfStr)
