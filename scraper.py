@@ -111,5 +111,5 @@ for domain in domains:
         # Save the image
         imageStream = io.BytesIO(r)
         imageFile = Image.open(imageStream)
-        imageFile.save('C:\\Users\\tranb\\Pictures\\pics\\'+str(random.randint(10**11,10**12))+".png")
-        respTxt = respTxt[ind+1:]
+        imageFile.save('C:\\Users\\tranb\\Pictures\\pics\\'+str(random.randint(10**10,10**12))+".png")
+        respTxt = respTxt[ind+len(domain):]
