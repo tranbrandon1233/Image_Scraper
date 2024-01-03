@@ -6,7 +6,7 @@ from PIL import Image
 import random
 import moviepy as mpy
 
-url='https://boards.4chan.org/v/thread/662573362'
+url=''
 response = requests.get(url)
 def download_images(images):
     if len(images) != 0:
@@ -26,18 +26,13 @@ def download_images(images):
                     image_link = image["data-src"]
                 except:
                     try:
-                        
                         image_link = image["data-fallback-src"]
                     except:
                         try:
-                            
                             image_link = image["src"]
-
-                        
                         except:
                             pass
             
- 
             r = requests.get(image_link).content
             #try:
 
@@ -66,13 +61,14 @@ def handleCollection(url):
     if '404' in r.content:
         for ext in extensions:
             r = requests.get(url + ext)
-            if '404' in r:
+            if '404' in r.content:
                 continue
             else:
                 break
     if ' ' in url:
             restOfStrArr = url.split(' ')
-            url = restOfStrArr[0] + restOfStrArr[1]
+            for substr in restOfStrArr:
+                url += substr
     print(url)
     soup = BeautifulSoup(r.text, 'html.parser')
     images = soup.findAll('img')
@@ -90,12 +86,12 @@ for domain in domains:
             if char == '.' or char == '<':
                 break
             restOfStr += char
-        if '/c' not in restOfStr:
-            respTxt = respTxt[ind+1:]
-            continue
+
         if ' ' in restOfStr:
             restOfStrArr = restOfStr.split(' ')
-            restOfStr = restOfStrArr[0] + restOfStrArr[1]
+            restOfStr = ''
+            for substr in restOfStrArr:
+                restOfStr += substr
         print(domain + restOfStr)
         if 'catbox' in domain and '/c/' not in restOfStr:
             for ext in extensions:
@@ -112,15 +108,8 @@ for domain in domains:
             print('New domain: ' + domain + restOfStr)
             handleCollection('https://' + domain + restOfStr)
                             
-    
-
-                
-
-                # Save the resized image
+        # Save the image
         imageStream = io.BytesIO(r)
         imageFile = Image.open(imageStream)
         imageFile.save('C:\\Users\\tranb\\Pictures\\pics\\'+str(random.randint(10**11,10**12))+".png")
         respTxt = respTxt[ind+1:]
-
-
-    
