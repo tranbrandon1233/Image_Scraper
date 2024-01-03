@@ -6,7 +6,7 @@ from PIL import Image
 import random
 import moviepy as mpy
 
-url=''
+url='https://boards.4chan.org/v/thread/662573362'
 response = requests.get(url)
 def download_images(images):
     if len(images) != 0:
@@ -49,21 +49,31 @@ def download_images(images):
             imageFile = Image.open(imageStream)
 
             # Resize the image
-            new_size = (1024, 1024)
-            resized_image = imageFile.resize(new_size)
 
             # Save the resized image
             try:
-              resized_image.save("C:\\Users\\tranb\\Pictures\\pics\\"+str(random.randint(10**11,10**12))+".png")
+              imageFile.save("C:\\Users\\tranb\\Pictures\\pics\\"+str(random.randint(10**11,10**12))+".png")
             except:
-              resized_image.convert('RGB').save("C:\\Users\\tranb\\Pictures\\pics\\"+str(random.randint(10**11,10**12))+".png")
+              imageFile.convert('RGB').save("C:\\Users\\tranb\\Pictures\\pics\\"+str(random.randint(10**11,10**12))+".png")
 
 
 
     print("All Images in Collection Downloaded!")
-    
+extensions = ['.jpg', '.jpeg', '.png']
+
 def handleCollection(url):
     r = requests.get(url)
+    if '404' in r.content:
+        for ext in extensions:
+            r = requests.get(url + ext)
+            if '404' in r:
+                continue
+            else:
+                break
+    if ' ' in url:
+            restOfStrArr = url.split(' ')
+            url = restOfStrArr[0] + restOfStrArr[1]
+    print(url)
     soup = BeautifulSoup(r.text, 'html.parser')
     images = soup.findAll('img')
     download_images(images)
@@ -76,78 +86,40 @@ for domain in domains:
             handleCollection('https://'+respTxt[respTxt.find('catbox'):].split('<')[0])
         ind = respTxt.find(domain)
         restOfStr = ''
-        count = 0
         for char in respTxt[ind+len(domain):]:
-            if char == '.' and domain =="catbox.moe/":
-                break
-            elif char == '<' and domain != "catbox.moe/":
+            if char == '.' or char == '<':
                 break
             restOfStr += char
-            count += 1
-        print('https://' + domain + restOfStr)
-        try:
-            r = requests.get('https://files.catbox.moe/' + restOfStr + '.png').content
-            # Resize the image
-            new_size = (1024, 1024)
-            imageStream = io.BytesIO(r)
-            imageFile = Image.open(imageStream)
-            resized_image = imageFile.resize(new_size)
-
-            # Save the resized image
-            resized_image.save('C:\\Users\\tranb\\Pictures\\pics\\'+str(random.randint(10**11,10**12))+".png")
-        except:
-            try:
-                r = requests.get('https://files.catbox.moe/' + restOfStr + '.jpg').content
-                    # Resize the image
-                new_size = (1024, 1024)
-                imageStream = io.BytesIO(r)
-                imageFile = Image.open(imageStream)
-                resized_image = imageFile.resize(new_size)
-                resized_image.save('C:\\Users\\tranb\\Pictures\\pics\\'+str(random.randint(10**11,10**12))+".jpg")
-            except: 
-                try:
-                    r = requests.get('https://files.catbox.moe/' + restOfStr + '.png').content
-                        # Resize the image
-                    new_size = (1024, 1024)
-                    imageStream = io.BytesIO(r)
-                    imageFile = Image.open(imageStream)
-                    resized_image = imageFile.resize(new_size)
-                    resized_image.save('C:\\Users\\tranb\\Pictures\\pics\\'+str(random.randint(10**11,10**12))+".png")
-                except:
-                    try:
-                        r = requests.get('https://litter.catbox.moe/' + restOfStr + '.jpg').content
-                            # Resize the image
-                        new_size = (1024, 1024)
-                        imageStream = io.BytesIO(r)
-                        imageFile = Image.open(imageStream)
-                        resized_image = imageFile.resize(new_size)
-                        resized_image.save('C:\\Users\\tranb\\Pictures\\pics\\'+str(random.randint(10**11,10**12))+".jpg")
-                    except:
-                        try:
-                            r = requests.get('https://files.catbox.moe/' + restOfStr + '.jpeg').content
-                                # Resize the image
-                            new_size = (1024, 1024)
-                            imageStream = io.BytesIO(r)
-                            imageFile = Image.open(imageStream)
-                            resized_image = imageFile.resize(new_size)
-                            resized_image.save('C:\\Users\\tranb\\Pictures\\pics\\'+str(random.randint(10**11,10**12))+".png")
-                        except:
-                            try:
-                                r = requests.get('https://litter.catbox.moe/' + restOfStr + '.jpeg').content
-                                    # Resize the image
-                                new_size = (1024, 1024)
-                                imageStream = io.BytesIO(r)
-                                imageFile = Image.open(imageStream)
-                                resized_image = imageFile.resize(new_size)
-                                resized_image.save('C:\\Users\\tranb\\Pictures\\pics\\'+str(random.randint(10**11,10**12))+".jpg")
-                       
-                            except:
-                                print('https://' + domain + restOfStr)
-                                handleCollection('https://' + domain + restOfStr)
+        if '/c' not in restOfStr:
+            respTxt = respTxt[ind+1:]
+            continue
+        if ' ' in restOfStr:
+            restOfStrArr = restOfStr.split(' ')
+            restOfStr = restOfStrArr[0] + restOfStrArr[1]
+        print(domain + restOfStr)
+        if 'catbox' in domain and '/c/' not in restOfStr:
+            for ext in extensions:
+                    r = requests.get('https://files.catbox.moe/' + restOfStr + ext).content
+                    if '404' in r:
+                        r = requests.get('https://litter.catbox.moe/' + restOfStr + ext).content
+                        if '404' in r:
+                            continue
+                        else:
+                            break
+                    else:
+                        break
+        else:
+            print('New domain: ' + domain + restOfStr)
+            handleCollection('https://' + domain + restOfStr)
                             
     
 
-        # Save the resized image
+                
+
+                # Save the resized image
+        imageStream = io.BytesIO(r)
+        imageFile = Image.open(imageStream)
+        imageFile.save('C:\\Users\\tranb\\Pictures\\pics\\'+str(random.randint(10**11,10**12))+".png")
         respTxt = respTxt[ind+1:]
 
 
