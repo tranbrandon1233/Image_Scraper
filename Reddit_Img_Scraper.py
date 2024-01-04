@@ -5,15 +5,16 @@ from PIL import Image
 import io
 import random
 import datetime
+import urllib
 
-
-def download_images(images, numImgs=2):
+def download_images(url, mode=2):
     usedLinks = []
-    if len(images) != 0:
-        for i,image in enumerate(images):
+    if len(url) != 0:
+        for i,image in enumerate(url):
           if i == 0:
                 continue
-          if numImgs == 1:
+        
+          elif mode == 1:
             image_link = image["src"]
           else:
             image_link = image["href"]
@@ -42,14 +43,18 @@ def download_images(images, numImgs=2):
     print("All Images Downloaded at " + str(datetime.datetime.now()))
 
 
-def main(url,numImgs=2):
+def main(url,mode=2):
     r = requests.get(url)
     soup = BeautifulSoup(r.text, 'html.parser')
-    if numImgs ==1:
+    if mode=='v':
+       urllib.request.urlretrieve(url, 'C:\\Users\\tranb\\Pictures\\pics\\' + str(random.randint(10**12,10**18)+1) +'.mp4')
+       print("Video Downloaded at " + str(datetime.datetime.now()))
+       return
+    elif mode ==1:
       images = soup.findAll('img')
     else:
       images = soup.findAll('a')
-    download_images(images, numImgs)
+    download_images(images, mode)
 
 url = ""
-main(url)
+main(url, 'v')
