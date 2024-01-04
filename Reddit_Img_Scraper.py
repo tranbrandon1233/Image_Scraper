@@ -57,4 +57,4 @@ def main(url,mode=2):
     download_images(images, mode)
 
 url = ""
-main(url, 'v')
+main(url, 1)

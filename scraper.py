@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 import io
 from PIL import Image
 import random
-import moviepy as mpy
+import urllib
 
 url=''
 response = requests.get(url)
@@ -54,7 +54,7 @@ def download_images(images):
 
 
     print("All Images in Collection Downloaded!")
-extensions = ['.jpg', '.jpeg', '.png']
+extensions = ['.jpg', '.jpeg', '.png', '.webm']
 
 def handleCollection(url):
     r = requests.get(url)
@@ -93,23 +93,31 @@ for domain in domains:
             for substr in restOfStrArr:
                 restOfStr += substr
         print(domain + restOfStr)
+        respTxt = respTxt[ind+len(domain):]
         if 'catbox' in domain and '/c/' not in restOfStr:
             for ext in extensions:
-                    r = requests.get('https://files.catbox.moe/' + restOfStr + ext).content
-                    if '404' in r:
-                        r = requests.get('https://litter.catbox.moe/' + restOfStr + ext).content
-                        if '404' in r:
+                    r = requests.get('https://files.catbox.moe/' + restOfStr + ext)
+                    print('https://files.catbox.moe/' + restOfStr + ext)
+                    if '404' in r.text:
+                        if '404' in r.text:
                             continue
                         else:
+                            r=r.content
                             break
                     else:
+                        r=r.content
                         break
         else:
             print('New domain: ' + domain + restOfStr)
             handleCollection('https://' + domain + restOfStr)
                             
         # Save the image
-        imageStream = io.BytesIO(r)
-        imageFile = Image.open(imageStream)
-        imageFile.save('C:\\Users\\tranb\\Pictures\\pics\\'+str(random.randint(10**10,10**12))+".png")
-        respTxt = respTxt[ind+len(domain):]
+        if '404' in str(r):
+            continue
+        elif 'webm' not in ext:
+            imageStream = io.BytesIO(r)
+            imageFile = Image.open(imageStream)
+            imageFile.save('C:\\Users\\tranb\\Pictures\\pics\\'+str(random.randint(10**10,10**12))+".png")
+        elif '404' not in r.text and 'webm' in ext:
+            urllib.request.urlretrieve(url, 'C:\\Users\\tranb\\Pictures\\pics\\' + str(random.randint(10**12,10**18)+1) +'.mp4')
+            print("Video Downloaded")
