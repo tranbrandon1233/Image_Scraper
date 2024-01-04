@@ -7,16 +7,18 @@ import random
 import datetime
 
 
-def download_images(images):
+def download_images(images, numImgs=2):
     usedLinks = []
     if len(images) != 0:
-        print("There are " + str(len(images)) + " images")
         for i,image in enumerate(images):
           if i == 0:
                 continue
-          image_link = image["href"]
+          if numImgs == 1:
+            image_link = image["src"]
+          else:
+            image_link = image["href"]
     
-          if "https://preview.redd.it/" not in image_link:
+          if "https://preview.redd.it/" not in image_link or image_link in usedLinks:
               continue
 
           print(image_link)
@@ -40,11 +42,14 @@ def download_images(images):
     print("All Images Downloaded at " + str(datetime.datetime.now()))
 
 
-def main(url):
+def main(url,numImgs=2):
     r = requests.get(url)
     soup = BeautifulSoup(r.text, 'html.parser')
-    images = soup.findAll('a')
-    download_images(images)
+    if numImgs ==1:
+      images = soup.findAll('img')
+    else:
+      images = soup.findAll('a')
+    download_images(images, numImgs)
 
 url = ""
 main(url)
