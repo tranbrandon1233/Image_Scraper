@@ -4,64 +4,48 @@ from bs4 import BeautifulSoup
 import io
 from PIL import Image
 import random
-import urllib
+import urllib.request
 
-url=''
-response = requests.get(url)
-def download_images(images):
+
+#url=''
+#response = requests.get(url)
+def download_images(images,url=""):
     if len(images) != 0:
         print("There are " + str(len(images)) + " images")
-        for i,image in enumerate(images):
-          if i == 0:
-            continue
-
-        try:
-            image_link = image["src"]
-        except:
-            try:    
-                image_link = image["data-srcset"]
-            except:
-                try:
-                    
-                    image_link = image["data-src"]
-                except:
+        if(len(url)> 0):
+                r = requests.get(url+'#gallery-1')
+                soup = BeautifulSoup(r.text, 'html.parser')
+                for link in soup.findAll('a'):
                     try:
-                        image_link = image["data-fallback-src"]
+                        print(link.get('href'))
+                        imageStream = urllib.request.urlretrieve(link.get('href'), "C:\\Users\\tranb\\Pictures\\pics\\"+str(random.randint(10**11,10**12))+".png") 
                     except:
-                        try:
-                            image_link = image["src"]
-                        except:
-                            pass
-            
-            r = requests.get(image_link).content
-            #try:
-
-                # possibility of decode
-                #r = str(r, 'utf-8')
-
-          #  except UnicodeDecodeError:
-            imageStream = io.BytesIO(r)
-            imageFile = Image.open(imageStream)
-
-            # Resize the image
-
-            # Save the resized image
-            try:
-              imageFile.save("C:\\Users\\tranb\\Pictures\\pics\\"+str(random.randint(10**11,10**12))+".png")
-            except:
-              imageFile.convert('RGB').save("C:\\Users\\tranb\\Pictures\\pics\\"+str(random.randint(10**11,10**12))+".png")
-
-
+                        continue
+        else:
+            for img in images:
+                try:
+                    img_url = img['src']
+                    if 'http' not in img_url:
+                        img_url = '{}{}'.format(url, img_url)
+                    #print(img_url)
+                    randNum = str(random.randint(10**11,10**12))
+                    imageStream = urllib.request.urlretrieve(img_url, "C:\\Users\\tranb\\Pictures\\test\\"+str(randNum)+".png") 
+                    imageFile = Image.open(imageStream)
+                    imageFile.save("C:\\Users\\tranb\\Pictures\\test\\"+str(randNum)+".png")
+                except:
+                    continue
 
     print("All Images in Collection Downloaded!")
+
+
 extensions = ['.jpg', '.jpeg', '.png', '.webm']
 
 def handleCollection(url):
     r = requests.get(url)
-    if '404' in r.content:
+    if '404' in str(r.content):
         for ext in extensions:
             r = requests.get(url + ext)
-            if '404' in r.content:
+            if '404' in str(r.content):
                 continue
             else:
                 break
@@ -72,7 +56,10 @@ def handleCollection(url):
     print(url)
     soup = BeautifulSoup(r.text, 'html.parser')
     images = soup.findAll('img')
-    download_images(images)
+    download_images(images,url)
+    
+handleCollection('https://catbox.moe/c/ktlqk8')
+
 
 domains = ['catbox.moe/', 'imgbox.com/', 'imgchest.com/','imgur.com/', 'imgur.com/a/', 'imgur.com/gallery/', 'imgur.com/r/', 'imgur.com/t/', 'imgur.com/user/', 'imgur.com/album/', 'imgur.com/gallery/', 'imgur.com/a/', 'imgur.com/r/', 'imgur.com/t/', 'imgur.com/user/', 'imgur.com/album/', 'imgur.com/gallery/', 'imgur.com/a/', 'imgur.com/r/', 'imgur.com/t/', 'imgur.com/user/', 'imgur.com/album/', 'imgur.com/gallery/', 'imgur.com/a/', 'imgur.com/r/', 'imgur.com/t/', 'imgur.com/user/', 'imgur.com/album/', 'imgur.com/gallery/', 'imgur.com/a/', 'imgur.com/r/', 'imgur.com/t/', 'imgur.com/user/', 'imgur.com/album/', 'imgur.com/gallery/', 'imgur.com/a/', 'imgur.com/r/', 'imgur.com/t/', 'imgur.com/user/', 'imgur.com/album/', 'imgur.com/gallery/', 'imgur.com/a/', 'imgur.com/r/', 'imgur.com/t/', 'imgur.com/user/', 'imgur.com/album/', 'imgur.com/gallery/', 'imgur.com/a/', 'imgur.com/r/', 'imgur.com/t/', 'imgur.com/user/', 'imgur.com/album/', 'imgur.com/gallery/', 'imgur.com/a/', 'imgur.com/r/', 'imgur.com/t/', 'imgur.com/user/', 'imgur.com/album/', 'imgur.com/gallery/']
 for domain in domains:
