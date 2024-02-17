@@ -58,7 +58,6 @@ def handleCollection(url):
     images = soup.findAll('img')
     download_images(images,url)
     
-handleCollection('https://catbox.moe/c/ktlqk8')
 
 
 domains = ['catbox.moe/', 'imgbox.com/', 'imgchest.com/','imgur.com/', 'imgur.com/a/', 'imgur.com/gallery/', 'imgur.com/r/', 'imgur.com/t/', 'imgur.com/user/', 'imgur.com/album/', 'imgur.com/gallery/', 'imgur.com/a/', 'imgur.com/r/', 'imgur.com/t/', 'imgur.com/user/', 'imgur.com/album/', 'imgur.com/gallery/', 'imgur.com/a/', 'imgur.com/r/', 'imgur.com/t/', 'imgur.com/user/', 'imgur.com/album/', 'imgur.com/gallery/', 'imgur.com/a/', 'imgur.com/r/', 'imgur.com/t/', 'imgur.com/user/', 'imgur.com/album/', 'imgur.com/gallery/', 'imgur.com/a/', 'imgur.com/r/', 'imgur.com/t/', 'imgur.com/user/', 'imgur.com/album/', 'imgur.com/gallery/', 'imgur.com/a/', 'imgur.com/r/', 'imgur.com/t/', 'imgur.com/user/', 'imgur.com/album/', 'imgur.com/gallery/', 'imgur.com/a/', 'imgur.com/r/', 'imgur.com/t/', 'imgur.com/user/', 'imgur.com/album/', 'imgur.com/gallery/', 'imgur.com/a/', 'imgur.com/r/', 'imgur.com/t/', 'imgur.com/user/', 'imgur.com/album/', 'imgur.com/gallery/', 'imgur.com/a/', 'imgur.com/r/', 'imgur.com/t/', 'imgur.com/user/', 'imgur.com/album/', 'imgur.com/gallery/']
