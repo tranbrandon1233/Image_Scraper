@@ -105,5 +105,5 @@ for domain in domains:
             imageFile = Image.open(imageStream)
             imageFile.save('C:\\Users\\tranb\\Pictures\\pics\\'+str(random.randint(10**10,10**12))+".png")
         elif '404' not in r.text and 'webm' in ext:
-            urllib.request.urlretrieve(url, 'C:\\Users\\tranb\\Pictures\\pics\\' + str(random.randint(10**12,10**18)+1) +'.webm')
+            urllib.request.urlretrieve(url, 'C:\\Users\\tranb\\Pictures\\pics\\' + str(random.randint(10**12,10**18)+1) +'.mp4')
             print("Video Downloaded")
